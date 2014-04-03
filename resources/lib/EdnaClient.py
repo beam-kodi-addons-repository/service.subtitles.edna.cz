@@ -2,6 +2,7 @@
 
 from utilities import log, file_size_and_hash
 import urllib, re, os, xbmc, xbmcgui
+import HTMLParser
 
 class EdnaClient(object):
 
@@ -51,7 +52,7 @@ class EdnaClient(object):
 		for episode_subtitle in episode_subtitle_list['versions']:
 
 			result_subtitles.append({
-				'filename': episode_subtitle_list['full_title'],
+				'filename': HTMLParser.HTMLParser().unescape(episode_subtitle_list['full_title']),
 				'link': self.server_url + episode_subtitle['link'],
 				'lang': episode_subtitle['lang'],
 				'rating': "0",
