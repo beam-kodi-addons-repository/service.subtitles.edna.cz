@@ -38,17 +38,21 @@ class EdnaClient(object):
 		return final_dest
 
 	def search(self, item):
-		tvshow_url = self.search_show_url(item['tvshow'])
-		if tvshow_url == None:
-			return None
+
+		if item['mansearch']:
+			title = item['mansearchstr']
+		else:
+			title = item['tvshow']
+
+		tvshow_url = self.search_show_url(title)
+		if tvshow_url == None: return None
 
 		file_size, file_hash = file_size_and_hash(item['file_original_path'], item['rar'])
 		log(__name__, "File size: " + str(file_size))
 
 		found_season_subtitles = self.search_season_subtitles(tvshow_url,item['season'])
 		episode_subtitle_list = self.filter_episode_from_season_subtitles(found_season_subtitles,item['season'],item['episode'])
-		if episode_subtitle_list == None:
-			return None
+		if episode_subtitle_list == None: return None
 
 		result_subtitles = []
 		for episode_subtitle in episode_subtitle_list['versions']:
