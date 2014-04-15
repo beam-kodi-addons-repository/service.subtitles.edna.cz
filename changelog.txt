@@ -1,8 +1,11 @@
+v0.0.4 (15.4.2014)
+- uprava velikosti ikony
+
 v0.0.3 (10.4.2014)
-	- manualni vyhledavani (pouze pro vyhledani serialu)
+- manualni vyhledavani (pouze pro vyhledani serialu)
 
 v0.0.2 (3.4.2014)
-	- unescape na jmeno titulku
+- unescape na jmeno titulku
 
 v0.0.1 (1.4.2014)
-	- preklopeni puvodni verze na Gotham
+- preklopeni puvodni verze na Gotham
