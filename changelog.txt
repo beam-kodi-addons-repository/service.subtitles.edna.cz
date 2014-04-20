@@ -1,3 +1,6 @@
+v0.0.6 (?.?.?)
+- procisteni nepotrebneho kodu
+
 v0.0.5 (15.4.2014)
 - moznost zkopirovani titulku vedle videa, pokud je prehravano video z raru (vypnuto)
 

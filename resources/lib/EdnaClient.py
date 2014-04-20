@@ -1,6 +1,6 @@
 # # -*- coding: utf-8 -*- 
 
-from utilities import log, file_size_and_hash
+from utilities import log
 import urllib, re, os, xbmc, xbmcgui
 import HTMLParser
 
@@ -46,9 +46,6 @@ class EdnaClient(object):
 
 		tvshow_url = self.search_show_url(title)
 		if tvshow_url == None: return None
-
-		file_size, file_hash = file_size_and_hash(item['file_original_path'], item['rar'])
-		log(__name__, "File size: " + str(file_size))
 
 		found_season_subtitles = self.search_season_subtitles(tvshow_url,item['season'])
 		episode_subtitle_list = self.filter_episode_from_season_subtitles(found_season_subtitles,item['season'],item['episode'])
