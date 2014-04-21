@@ -1,4 +1,4 @@
-v0.0.6 (?.?.?)
+v0.2.0 (21.4.2014)
 - procisteni nepotrebneho kodu
 
 v0.0.5 (15.4.2014)
