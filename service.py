@@ -25,7 +25,7 @@ __temp__       = xbmc.translatePath( os.path.join( __profile__, 'temp') ).decode
 
 sys.path.append (__resource__)
 
-from utilities import log, extract_subtitles, copy_subtitles_on_rar
+from utilities import log, extract_subtitles, copy_subtitles_on_rar, select_file_menu
 from EdnaClient import EdnaClient as SubtitlesClient
 
 def Search(item):
@@ -70,7 +70,8 @@ def Download(link, lang):
   log(__scriptname__,"Extracting subtitles")
   subtitle_list = extract_subtitles(downloaded_file)
   log(__scriptname__,subtitle_list)
-  # subtitle_list.append("/Path/Of/Subtitle2.srt") # this can be url, local path or network path.
+
+  subtitle_list = select_file_menu(subtitle_list)
   
   if __addon__.getSetting("copy_subs_if_rar_played") == "true": copy_subtitles_on_rar(subtitle_list,lang)
 

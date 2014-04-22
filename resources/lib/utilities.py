@@ -1,12 +1,29 @@
 # -*- coding: utf-8 -*- 
 
 import os
-import xbmc, xbmcvfs
+import xbmc, xbmcvfs, xbmcgui
 import struct
 import urllib
 
 def log(module, msg):
     xbmc.log((u"### [%s] - %s" % (module, msg,)).encode('utf-8'), level=xbmc.LOGDEBUG)
+
+def select_file_menu(file_list):
+    if not file_list or file_list.__len__() == 1: return file_list
+
+    log(__name__, "More items in file list, creating dialog")
+
+    menu_dialog = []
+    for file_path in file_list: menu_dialog.append(os.path.basename(file_path))
+    dialog = xbmcgui.Dialog()
+
+    # TODO: translate
+    selected_file_id = dialog.select("Select file", menu_dialog)
+    if (selected_file_id == -1): return file_list
+
+    selected_file_path = [file_list[selected_file_id]]
+    log(__name__, "Item selected %s" % selected_file_path)
+    return selected_file_path
 
 def copy_subtitles_on_rar(subtitle_list,lang):
     if not subtitle_list: return False
