@@ -1,7 +1,7 @@
 # # -*- coding: utf-8 -*- 
 
 from utilities import log
-import urllib, re, os, xbmc, xbmcgui
+import urllib, re, os, copy, xbmc, xbmcgui
 import HTMLParser
 
 class EdnaClient(object):
@@ -48,14 +48,21 @@ class EdnaClient(object):
 		if tvshow_url == None: return None
 
 		found_season_subtitles = self.search_season_subtitles(tvshow_url,item['season'])
+		log(__name__, ["Season filter", found_season_subtitles])
+
 		episode_subtitle_list = self.filter_episode_from_season_subtitles(found_season_subtitles,item['season'],item['episode'])
+		log(__name__, ["Episode filter", episode_subtitle_list])
 		if episode_subtitle_list == None: return None
 
+		lang_filetred_episode_subtitle_list = self.filter_subtitles_by_language(item['3let_language'], episode_subtitle_list)
+		log(__name__, ["Language filter", lang_filetred_episode_subtitle_list])
+		if lang_filetred_episode_subtitle_list == None: return None
+
 		result_subtitles = []
-		for episode_subtitle in episode_subtitle_list['versions']:
+		for episode_subtitle in lang_filetred_episode_subtitle_list['versions']:
 
 			result_subtitles.append({
-				'filename': HTMLParser.HTMLParser().unescape(episode_subtitle_list['full_title']),
+				'filename': HTMLParser.HTMLParser().unescape(lang_filetred_episode_subtitle_list['full_title']),
 				'link': self.server_url + episode_subtitle['link'],
 				'lang': episode_subtitle['lang'],
 				'rating': "0",
@@ -63,9 +70,24 @@ class EdnaClient(object):
 				'lang_flag': xbmc.convertLanguage(episode_subtitle['lang'],xbmc.ISO_639_1),
 			})
 
-		log(__name__,"Search RESULT")
-		log(__name__,result_subtitles)
+		log(__name__,["Search RESULT", result_subtitles])
 		return result_subtitles
+
+	def filter_subtitles_by_language(self, set_languages, subtitles_list):
+		if not set_languages: return subtitles_list
+
+		log(__name__, ['Filter by Languages', set_languages])
+		filter_subtitles_list = []
+		for subtitle in subtitles_list['versions']:
+			if xbmc.convertLanguage(subtitle['lang'],xbmc.ISO_639_2) in set_languages:
+				filter_subtitles_list.append(subtitle)
+
+		if not filter_subtitles_list:
+			return None
+		else:
+			filter_results_list = copy.deepcopy(subtitles_list)
+			filter_results_list['versions'] = filter_subtitles_list
+			return filter_results_list
 
 	def filter_episode_from_season_subtitles(self, season_subtitles, season, episode):
 		episode_subtitle_list = None
