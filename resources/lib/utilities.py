@@ -9,7 +9,7 @@ def log(module, msg):
     xbmc.log((u"### [%s] - %s" % (module, msg,)).encode('utf-8'), level=xbmc.LOGDEBUG)
 
 def select_file_menu(file_list, dialog_title = "Select file"):
-    if not file_list or file_list.__len__() == 1: return file_list
+    if not file_list or len(file_list) == 1: return file_list
 
     log(__name__, "More items in file list, creating dialog")
 

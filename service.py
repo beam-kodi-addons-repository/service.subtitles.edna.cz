@@ -37,8 +37,7 @@ def Search(item):
   cli = SubtitlesClient(__addon__)
   found_subtitles = cli.search(item)
 
-  if (found_subtitles == [] or found_subtitles == None):
-    return False
+  if not found_subtitles: return None
 
   for subtitle in found_subtitles:
     listitem = xbmcgui.ListItem(label=subtitle['lang'],                                   # language name for the found subtitle
@@ -102,9 +101,6 @@ def get_params():
 
 params = get_params()
 
-print params
-
-
 if params['action'] == 'search' or params['action'] == 'manualsearch':
   item = {}
   item['temp']               = False
@@ -143,7 +139,7 @@ if params['action'] == 'search' or params['action'] == 'manualsearch':
   elif ( item['file_original_path'].find("stack://") > -1 ):
     stackPath = item['file_original_path'].split(" , ")
     item['file_original_path'] = stackPath[0][8:]
-  
+
   Search(item)  
 
 elif params['action'] == 'download':

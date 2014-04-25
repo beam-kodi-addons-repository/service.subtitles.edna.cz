@@ -14,7 +14,7 @@ class EdnaClient(object):
 	def download(self,link):
 
 		dest_dir = os.path.join(xbmc.translatePath(self.addon.getAddonInfo('profile').decode("utf-8")), 'temp')
-		dest = os.path.join(dest_dir, "download.zip")
+		dest = os.path.join(dest_dir, "download.tmp")
 
 		log(__name__,'Downloading subtitles from %s' % link)
 		res = urllib.urlopen(link)
@@ -40,10 +40,7 @@ class EdnaClient(object):
 
 	def search(self, item):
 
-		if item['mansearch']:
-			title = item['mansearchstr']
-		else:
-			title = item['tvshow']
+		title = item['mansearchstr'] if item['mansearch'] else item['tvshow']
 
 		tvshow_url = self.search_show_url(title)
 		if tvshow_url == None: return None
@@ -71,13 +68,13 @@ class EdnaClient(object):
 				'lang_flag': xbmc.convertLanguage(episode_subtitle['lang'],xbmc.ISO_639_1),
 			})
 
-		log(__name__,["Search RESULT", result_subtitles])
+		log(__name__,["Search result", result_subtitles])
 		return result_subtitles
 
 	def filter_subtitles_by_language(self, set_languages, subtitles_list):
 		if not set_languages: return subtitles_list
 
-		log(__name__, ['Filter by Languages', set_languages])
+		log(__name__, ['Filter by languages', set_languages])
 		filter_subtitles_list = []
 		for subtitle in subtitles_list['versions']:
 			if xbmc.convertLanguage(subtitle['lang'],xbmc.ISO_639_2) in set_languages:
@@ -91,21 +88,14 @@ class EdnaClient(object):
 			return filter_results_list
 
 	def filter_episode_from_season_subtitles(self, season_subtitles, season, episode):
-		episode_subtitle_list = None
-
 		for season_subtitle in season_subtitles:
 			if (season_subtitle['episode'] == int(episode) and season_subtitle['season'] == int(season)):
-				episode_subtitle_list = season_subtitle
-				break
-
-		log(__name__, episode_subtitle_list)
-		return episode_subtitle_list
+				return season_subtitle
+		return None
 
 	def search_show_url(self,title):
-		log(__name__,"Starting search by TV Show")
-		if (title == None or title == ''):
-			log(__name__,"No TVShow name, stop")
-			return None
+		log(__name__,"Starting search by TV Show: %s" % title)
+		if not title: return None
 
 		enc_title = urllib.urlencode({ "q" : title})
 		res = urllib.urlopen(self.server_url + "/vyhledavani/?" + enc_title)
@@ -126,21 +116,19 @@ class EdnaClient(object):
 			show['title'] = title
 			found_tv_shows.append(show)
 		
-		if (found_tv_shows.__len__() == 0):
-			log(__name__,"TVShow not found, stop")
+		if (len(found_tv_shows) == 0):
+			log(__name__,"No TV Show found")
 			return None
-		elif (found_tv_shows.__len__() == 1):
-			log(__name__,"One TVShow found, auto select")
+		elif (len(found_tv_shows) == 1):
+			log(__name__,"One TV Show found, autoselecting")
 			tvshow_url = found_tv_shows[0]['url']
 		else:
-			log(__name__,"More TVShows found, user dialog for select")
+			log(__name__,"More TV Shows found, user dialog for select")
 			menu_dialog = []
-			for found_tv_show in found_tv_shows:
-				menu_dialog.append(found_tv_show['title'])
+			for found_tv_show in found_tv_shows: menu_dialog.append(found_tv_show['title'])
 			dialog = xbmcgui.Dialog()
 			found_tv_show_id = dialog.select(self._t(32003), menu_dialog)
-			if (found_tv_show_id == -1):
-				return None
+			if (found_tv_show_id == -1): return None # cancel dialog
 			tvshow_url = found_tv_shows[found_tv_show_id]['url']
 		
 		log(__name__,"Selected show URL: " + tvshow_url)
@@ -169,7 +157,7 @@ class EdnaClient(object):
 				if subtitle_version['lang'] == "SK": subtitle_version['lang'] = "Slovak"
 					
 				subtitle['versions'].append(subtitle_version)
-			if subtitle['versions'].__len__() > 0: subtitles.append(subtitle)
+			if len(subtitle['versions']) > 0: subtitles.append(subtitle)
 		return subtitles
 
 
