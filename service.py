@@ -71,7 +71,7 @@ def Download(link, lang):
   subtitle_list = extract_subtitles(downloaded_file)
   log(__scriptname__,subtitle_list)
 
-  subtitle_list = select_file_menu(subtitle_list)
+  subtitle_list = select_file_menu(subtitle_list, __language__(32004))
   
   if __addon__.getSetting("copy_subs_if_rar_played") == "true": copy_subtitles_on_rar(subtitle_list,lang)
 

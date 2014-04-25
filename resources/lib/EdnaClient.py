@@ -9,6 +9,7 @@ class EdnaClient(object):
 	def __init__(self,addon):
 		self.server_url = "http://www.edna.cz"
 		self.addon = addon
+		self._t = addon.getLocalizedString
 
 	def download(self,link):
 
@@ -137,8 +138,7 @@ class EdnaClient(object):
 			for found_tv_show in found_tv_shows:
 				menu_dialog.append(found_tv_show['title'])
 			dialog = xbmcgui.Dialog()
-			# TODO: translate
-			found_tv_show_id = dialog.select("Select TV show", menu_dialog)
+			found_tv_show_id = dialog.select(self._t(32003), menu_dialog)
 			if (found_tv_show_id == -1):
 				return None
 			tvshow_url = found_tv_shows[found_tv_show_id]['url']

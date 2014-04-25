@@ -8,7 +8,7 @@ import urllib
 def log(module, msg):
     xbmc.log((u"### [%s] - %s" % (module, msg,)).encode('utf-8'), level=xbmc.LOGDEBUG)
 
-def select_file_menu(file_list):
+def select_file_menu(file_list, dialog_title = "Select file"):
     if not file_list or file_list.__len__() == 1: return file_list
 
     log(__name__, "More items in file list, creating dialog")
@@ -17,8 +17,7 @@ def select_file_menu(file_list):
     for file_path in file_list: menu_dialog.append(os.path.basename(file_path))
     dialog = xbmcgui.Dialog()
 
-    # TODO: translate
-    selected_file_id = dialog.select("Select file", menu_dialog)
+    selected_file_id = dialog.select(dialog_title, menu_dialog)
     if (selected_file_id == -1): return file_list
 
     selected_file_path = [file_list[selected_file_id]]
