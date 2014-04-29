@@ -69,6 +69,10 @@ class EdnaClient(object):
 			})
 
 		log(__name__,["Search result", result_subtitles])
+
+		# call statistics
+		if self.addon.getSetting("send_statistics") == "true": send_statistics('search', self.addon, title, item, len(result_subtitles))
+
 		return result_subtitles
 
 	def filter_subtitles_by_language(self, set_languages, subtitles_list):
