@@ -3,6 +3,7 @@
 from utilities import log
 import urllib, re, os, copy, xbmc, xbmcgui
 import HTMLParser
+from stats import results_with_stats
 
 class EdnaClient(object):
 
@@ -43,18 +44,18 @@ class EdnaClient(object):
 		title = item['mansearchstr'] if item['mansearch'] else item['tvshow']
 
 		tvshow_url = self.search_show_url(title)
-		if tvshow_url == None: return None
+		if tvshow_url == None: return results_with_stats(None, self.addon, title, item)
 
 		found_season_subtitles = self.search_season_subtitles(tvshow_url,item['season'])
 		log(__name__, ["Season filter", found_season_subtitles])
 
 		episode_subtitle_list = self.filter_episode_from_season_subtitles(found_season_subtitles,item['season'],item['episode'])
 		log(__name__, ["Episode filter", episode_subtitle_list])
-		if episode_subtitle_list == None: return None
+		if episode_subtitle_list == None: return results_with_stats(None, self.addon, title, item)
 
 		lang_filetred_episode_subtitle_list = self.filter_subtitles_by_language(item['3let_language'], episode_subtitle_list)
 		log(__name__, ["Language filter", lang_filetred_episode_subtitle_list])
-		if lang_filetred_episode_subtitle_list == None: return None
+		if lang_filetred_episode_subtitle_list == None: return results_with_stats(None, self.addon, title, item)
 
 		result_subtitles = []
 		for episode_subtitle in lang_filetred_episode_subtitle_list['versions']:
@@ -70,10 +71,7 @@ class EdnaClient(object):
 
 		log(__name__,["Search result", result_subtitles])
 
-		# call statistics
-		if self.addon.getSetting("send_statistics") == "true": send_statistics('search', self.addon, title, item, len(result_subtitles))
-
-		return result_subtitles
+		return results_with_stats(result_subtitles, self.addon, title, item)
 
 	def filter_subtitles_by_language(self, set_languages, subtitles_list):
 		if not set_languages: return subtitles_list
