@@ -67,7 +67,7 @@ def Download(link, lang):
   downloaded_file = cli.download(link)
   
   log(__scriptname__,"Extracting subtitles")
-  subtitle_list = extract_subtitles(downloaded_file)
+  if downloaded_file.lower().endswith((".rar",".zip")): subtitle_list = extract_subtitles(downloaded_file)
   log(__scriptname__,subtitle_list)
 
   subtitle_list = select_file_menu(subtitle_list, __language__(32004))
