@@ -1,3 +1,7 @@
+v0.9.3 (11.5.2014)
+- funkcni manualni vyhledavani
+- opravene stahovani slovenskych titulku
+
 v0.9.2 (6.5.2014)
 - dialog s nabidkou otevrit nastaveni jazyku titulku pokud jsou nastaveny spatne
 
