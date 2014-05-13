@@ -13,6 +13,9 @@
     <string id="32900">Saving</string>
     <string id="32901">Copy subtitles next to the video if video is played from rar</string>
 
+    <string id="32910">Searching</string>
+    <string id="32911">Use text in brackets as search pattern and normalize</string>
+
     <string id="32930">Statistics</string>
     <string id="32931">Send anonymous usage statistics</string>
 </strings>
