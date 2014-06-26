@@ -39,12 +39,14 @@ class EdnaClient(object):
 
 		return final_dest
 
-	def get_title_from_brackets(self, title):
+	def normalize_input_title(self, title):
 		if self.addon.getSetting("search_title_in_brackets") == "true":
 			log(__name__, "Searching title in brackets - %s" % title)
-			search_second_title = re.match(r'.+ \((.+)\)',title)
+			search_second_title = re.match(r'.+ \((.{3,})\)',title)
 			if search_second_title and not re.search(r'^[\d]{4}$',search_second_title.group(1)): title = search_second_title.group(1)
-			if re.search(r', The$',title,re.IGNORECASE): title =  "The " + re.sub(r'(?i), The$',"", title) # normalize The
+		
+		if re.search(r', The$',title,re.IGNORECASE): title =  "The " + re.sub(r'(?i), The$',"", title) # normalize The
+		
 		return title.strip()
 
 	def search(self, item):
@@ -55,7 +57,7 @@ class EdnaClient(object):
 			item['season'] = dialog.numeric(0, self._t(32111), item['season'])
 			item['episode'] = dialog.numeric(0, self._t(32111), item['episode'])
 		else:
-			title = self.get_title_from_brackets(item['tvshow'])
+			title = self.normalize_input_title(item['tvshow'])
 
 		if not title or not item['season'] or not item['episode']:
 			xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)" % (
