@@ -3,7 +3,7 @@
 from utilities import log
 import urllib, re, os, copy, xbmc, xbmcgui
 import HTMLParser
-from stats import results_with_stats
+from usage_stats import results_with_stats
 
 class EdnaClient(object):
 
