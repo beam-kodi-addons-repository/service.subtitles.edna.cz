@@ -1,4 +1,4 @@
-# # -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 
 from utilities import log
 import urllib, re, os, copy, xbmc, xbmcgui
@@ -19,12 +19,12 @@ class EdnaClient(object):
 
 		log(__name__,'Downloading subtitles from %s' % link)
 		res = urllib.urlopen(link)
-		
+
 		subtitles_filename = re.search("Content\-Disposition: attachment; filename=\"(.+?)\"",str(res.info())).group(1)
 		log(__name__,'Filename: %s' % subtitles_filename)
 		subtitles_format = re.search("\.(\w+?)$", subtitles_filename, re.IGNORECASE).group(1)
 		log(__name__,"Subs in %s" % subtitles_format)
-		
+
 		subtitles_data = res.read()
 
 		log(__name__,'Saving to file %s' % dest)
@@ -44,11 +44,11 @@ class EdnaClient(object):
 			log(__name__, "Searching title in brackets - %s" % title)
 			search_second_title = re.match(r'.+ \((.{3,})\)',title)
 			if search_second_title and not re.search(r'^[\d]{4}$',search_second_title.group(1)): title = search_second_title.group(1)
-		
+
 		if re.search(r', The$',title,re.IGNORECASE):
 			log(__name__, "Swap The - %s" % title)
 			title =  "The " + re.sub(r'(?i), The$',"", title) # normalize The
-		
+
 		if self.addon.getSetting("try_cleanup_title") == "true":
 			log(__name__, "Title cleanup - %s" % title)
 			title = re.sub(r"(\[|\().+?(\]|\))","",title) # remove [xy] and (xy)
@@ -151,7 +151,7 @@ class EdnaClient(object):
 			show['url'] = re.search(self.server_url + "(.+)",res.geturl()).group(1)
 			show['title'] = title
 			found_tv_shows.append(show)
-		
+
 		if (len(found_tv_shows) == 0):
 			log(__name__,"No TV Show found")
 			return None
@@ -166,7 +166,7 @@ class EdnaClient(object):
 			found_tv_show_id = dialog.select(self._t(32003), menu_dialog)
 			if (found_tv_show_id == -1): return None # cancel dialog
 			tvshow_url = found_tv_shows[found_tv_show_id]['url']
-		
+
 		log(__name__,"Selected show URL: " + tvshow_url)
 		return tvshow_url
 
@@ -174,7 +174,7 @@ class EdnaClient(object):
 		res = urllib.urlopen(self.server_url + show_url + "titulky/?season=" + show_series)
 		if not res.getcode() == 200: return []
 		subtitles = []
-		html_subtitle_table = re.search("<table class=\"episodes\">.+<tbody>(.+?)</tbody>.+</table>",res.read(), re.IGNORECASE | re.DOTALL)
+		html_subtitle_table = re.search("<table class=\"episodes\">.+<tbody.*?>(.+?)</tbody>.+</table>",res.read(), re.IGNORECASE | re.DOTALL)
 		if html_subtitle_table == None: return []
 		for html_episode in re.findall("<tr>(.+?)</tr>", html_subtitle_table.group(1), re.IGNORECASE | re.DOTALL):
 			subtitle = {}
@@ -190,11 +190,9 @@ class EdnaClient(object):
 				# hack na slovenske titulky titulky/?subslang=sk#content
 				subtitle_version['link'] = re.sub("direct=1\?","direct=1&",re.sub(r"/titulky/(.*)#content",r"/titulky/?direct=1\1",subs_url))
 				subtitle_version['lang'] = subs_lang.upper()
-				if subtitle_version['lang'] == "CZ": subtitle_version['lang'] = "Czech" 
+				if subtitle_version['lang'] == "CZ": subtitle_version['lang'] = "Czech"
 				if subtitle_version['lang'] == "SK": subtitle_version['lang'] = "Slovak"
-					
+
 				subtitle['versions'].append(subtitle_version)
 			if len(subtitle['versions']) > 0: subtitles.append(subtitle)
 		return subtitles
-
-
