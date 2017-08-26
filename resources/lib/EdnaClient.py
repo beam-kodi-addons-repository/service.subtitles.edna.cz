@@ -8,7 +8,7 @@ from usage_stats import results_with_stats
 class EdnaClient(object):
 
 	def __init__(self,addon):
-		self.server_url = "http://www.edna.cz"
+		self.server_url = "https://www.edna.cz"
 		self.addon = addon
 		self._t = addon.getLocalizedString
 

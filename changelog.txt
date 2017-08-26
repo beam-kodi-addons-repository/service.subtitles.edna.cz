@@ -1,3 +1,6 @@
+v1.3.0 (26.8.2017)
+- prechod na HTTPS verzi stranek
+
 v1.2.3 (18.3.2017)
 - oprava hledani, zmena HTML
 
