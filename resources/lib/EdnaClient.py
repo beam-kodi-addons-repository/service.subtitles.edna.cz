@@ -3,7 +3,7 @@
 from utilities import log
 import urllib, re, os, copy, xbmc, xbmcgui
 import HTMLParser
-from usage_stats import results_with_stats
+from usage_stats import results_with_stats, mark_start_time
 
 class EdnaClient(object):
 
@@ -11,6 +11,8 @@ class EdnaClient(object):
 		self.server_url = "https://www.edna.cz"
 		self.addon = addon
 		self._t = addon.getLocalizedString
+
+		mark_start_time()
 
 	def download(self,link):
 
