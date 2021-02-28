@@ -3,10 +3,9 @@
 import os
 import xbmc, xbmcvfs, xbmcgui
 import struct
-import urllib
 
 def log(module, msg):
-    xbmc.log((u"### [%s] - %s" % (module, msg,)).encode('utf-8'), level=xbmc.LOGDEBUG)
+    xbmc.log((u"### [%s] - %s" % (str(module), str(msg))), level=xbmc.LOGDEBUG)
 
 def select_file_menu(file_list, dialog_title = "Select file"):
     if not file_list or len(file_list) == 1: return file_list
@@ -25,7 +24,8 @@ def select_file_menu(file_list, dialog_title = "Select file"):
     return selected_file_path
 
 def extract_subtitles(archive_dir):
-    xbmc.executebuiltin(('XBMC.Extract("%s")' % archive_dir).encode('utf-8'))
+    xbmc.executebuiltin('Extract("%s")' % archive_dir)
+    
     xbmc.sleep(1000)
     basepath = os.path.dirname(archive_dir)
     extracted_files = os.listdir(basepath)

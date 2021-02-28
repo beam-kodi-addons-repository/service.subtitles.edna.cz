@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from utilities import log
-import urllib, re, os, copy, xbmc, xbmcgui
-import HTMLParser
+import urllib, urllib.parse, urllib.request
+import re, os, copy, xbmc, xbmcgui, xbmcvfs
+from html.parser import HTMLParser
 from usage_stats import results_with_stats, mark_start_time
 
 class EdnaClient(object):
@@ -16,11 +17,11 @@ class EdnaClient(object):
 
 	def download(self,link):
 
-		dest_dir = os.path.join(xbmc.translatePath(self.addon.getAddonInfo('profile').decode("utf-8")), 'temp')
+		dest_dir = os.path.join(xbmcvfs.translatePath(self.addon.getAddonInfo('profile')), 'temp')
 		dest = os.path.join(dest_dir, "download.tmp")
 
 		log(__name__,'Downloading subtitles from %s' % link)
-		res = urllib.urlopen(link)
+		res = urllib.request.urlopen(link)
 
 		subtitles_filename = re.search("Content\-Disposition: attachment; filename=\"(.+?)\"",str(res.info())).group(1)
 		log(__name__,'Filename: %s' % subtitles_filename)
@@ -70,7 +71,7 @@ class EdnaClient(object):
 		if not title or not item['season'] or not item['episode']:
 			xbmc.executebuiltin("XBMC.Notification(%s,%s,5000,%s)" % (
 						self.addon.getAddonInfo('name'), self._t(32110),
-						os.path.join(xbmc.translatePath(self.addon.getAddonInfo('path')).decode("utf-8"),'icon.png')
+						os.path.join(xbmcvfs.translatePath(self.addon.getAddonInfo('path')),'icon.png')
 			))
 			log(__name__, ["Input validation error", title, item['season'], item['episode']])
 			return results_with_stats(None, self.addon, title, item)
@@ -93,7 +94,7 @@ class EdnaClient(object):
 		for episode_subtitle in lang_filetred_episode_subtitle_list['versions']:
 
 			result_subtitles.append({
-				'filename': HTMLParser.HTMLParser().unescape(lang_filetred_episode_subtitle_list['full_title']),
+				'filename': HTMLParser().unescape(lang_filetred_episode_subtitle_list['full_title']),
 				'link': self.server_url + episode_subtitle['link'],
 				'lang': episode_subtitle['lang'],
 				'rating': "0",
@@ -137,12 +138,12 @@ class EdnaClient(object):
 		log(__name__,"Starting search by TV Show: %s" % title)
 		if not title: return None
 
-		enc_title = urllib.urlencode({ "q" : title})
-		res = urllib.urlopen(self.server_url + "/vyhledavani/?" + enc_title)
+		enc_title = urllib.parse.urlencode({ "q" : title})
+		res = urllib.request.urlopen(self.server_url + "/vyhledavani/?" + enc_title)
 		found_tv_shows = []
 		if re.search("/vyhledavani/\?q=",res.geturl()):
 			log(__name__,"Parsing search result")
-			res_body = re.search("<ul class=\"list serieslist\">(.+?)</ul>",res.read(),re.IGNORECASE | re.DOTALL)
+			res_body = re.search("<ul class=\"list serieslist\">(.+?)</ul>",res.read().decode("utf-8"),re.IGNORECASE | re.DOTALL)
 			if res_body:
 				for row in re.findall("<li>(.+?)</li>", res_body.group(1), re.IGNORECASE | re.DOTALL):
 					show = {}
@@ -175,10 +176,10 @@ class EdnaClient(object):
 		return tvshow_url
 
 	def search_season_subtitles(self, show_url, show_series):
-		res = urllib.urlopen(self.server_url + show_url + "titulky/?season=" + show_series)
+		res = urllib.request.urlopen(self.server_url + show_url + "titulky/?season=" + show_series)
 		if not res.getcode() == 200: return []
 		subtitles = []
-		html_subtitle_table = re.search("<table class=\"episodes\">.+<tbody.*?>(.+?)</tbody>.+</table>",res.read(), re.IGNORECASE | re.DOTALL)
+		html_subtitle_table = re.search("<table class=\"episodes\">.+<tbody.*?>(.+?)</tbody>.+</table>",res.read().decode("utf-8"), re.IGNORECASE | re.DOTALL)
 		if html_subtitle_table == None: return []
 		for html_episode in re.findall("<tr>(.+?)</tr>", html_subtitle_table.group(1), re.IGNORECASE | re.DOTALL):
 			subtitle = {}
