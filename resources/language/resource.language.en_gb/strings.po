@@ -1,0 +1,51 @@
+msgid ""
+msgstr ""
+
+msgctxt "#32003"
+msgid "Select TV Show"
+msgstr ""
+
+msgctxt "#32004"
+msgid "Select file"
+msgstr ""
+
+msgctxt "#32100"
+msgid "Addon is only for czech and slovak subtitles. Check the settings of the language for which you want to download subtitles."
+msgstr ""
+
+msgctxt "#32101"
+msgid "Open settings?"
+msgstr ""
+
+msgctxt "#32110"
+msgid "Use manual search string"
+msgstr ""
+
+msgctxt "#32111"
+msgid "Enter series number"
+msgstr ""
+
+msgctxt "#32112"
+msgid "Enter episode number"
+msgstr ""
+
+msgctxt "#32910"
+msgid "Searching"
+msgstr ""
+
+msgctxt "#32911"
+msgid "Use text in brackets as search pattern and normalize"
+msgstr ""
+
+msgctxt "#32914"
+msgid "Clean title search prior to the excess text (brackets, formatting, etc.)."
+msgstr ""
+
+msgctxt "#32930"
+msgid "Statistics"
+msgstr ""
+
+msgctxt "#32931"
+msgid "Send anonymous usage statistics"
+msgstr ""
+

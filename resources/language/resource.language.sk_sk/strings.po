@@ -1,0 +1,51 @@
+msgid ""
+msgstr ""
+
+msgctxt "#32003"
+msgid "Select TV Show"
+msgstr "Vyberte seriál"
+
+msgctxt "#32004"
+msgid "Select file"
+msgstr "Vyberte súbor"
+
+msgctxt "#32100"
+msgid "Addon is only for czech and slovak subtitles. Check the settings of the language for which you want to download subtitles."
+msgstr "Doplnok je určený pre slovenských a českých titulky, skontrolujte Vaše nastavenia jazykov, pre ktoré chcete titulky sťahovať."
+
+msgctxt "#32101"
+msgid "Open settings?"
+msgstr "Otvoriť nastavenia?"
+
+msgctxt "#32110"
+msgid "Use manual search string"
+msgstr "Zadajte retazec na vyhladanie"
+
+msgctxt "#32111"
+msgid "Enter series number"
+msgstr "Zadajte číslo rady seriálu"
+
+msgctxt "#32112"
+msgid "Enter episode number"
+msgstr "Zadajte číslo epizódy seriálu"
+
+msgctxt "#32910"
+msgid "Searching"
+msgstr "Vyhľadávanie"
+
+msgctxt "#32911"
+msgid "Use text in brackets as search pattern and normalize"
+msgstr "Použiť text v zátvorke v mene ako základ pre vyhľadávanie"
+
+msgctxt "#32914"
+msgid "Clean title search prior to the excess text (brackets, formatting, etc.)."
+msgstr "Vyčistiť názov pred vyhľadávaním o prebytočný text (zátvorky, formátovanie, atď.)"
+
+msgctxt "#32930"
+msgid "Statistics"
+msgstr "Štatistiky"
+
+msgctxt "#32931"
+msgid "Send anonymous usage statistics"
+msgstr "Odosielať anonymné štatistiky o využití doplnku"
+
