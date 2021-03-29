@@ -1,3 +1,7 @@
+
+v2.0.1 (29.3.2021)
+- deployment do rozdeleneho repositare
+
 v2.0.0 (28.2.2021)
 - upgrade na 19.x
 
