@@ -1,3 +1,6 @@
+v1.4.1 (29.3.2021)
+- deployment do rozdeleneho repositare
+
 v1.4.0 (3.3.2018)
 - oprava otevirani okna s vyberem nastaveni jazyku pro stazeni
 
