@@ -3,7 +3,7 @@
 from utilities import log
 import urllib, urllib.parse, urllib.request
 import re, os, copy, xbmc, xbmcgui, xbmcvfs
-from html.parser import HTMLParser
+import html
 from usage_stats import results_with_stats, mark_start_time
 
 class EdnaClient(object):
@@ -94,7 +94,7 @@ class EdnaClient(object):
 		for episode_subtitle in lang_filetred_episode_subtitle_list['versions']:
 
 			result_subtitles.append({
-				'filename': HTMLParser().unescape(lang_filetred_episode_subtitle_list['full_title']),
+				'filename': html.unescape(lang_filetred_episode_subtitle_list['full_title']),
 				'link': self.server_url + episode_subtitle['link'],
 				'lang': episode_subtitle['lang'],
 				'rating': "0",

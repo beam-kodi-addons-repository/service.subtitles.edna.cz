@@ -1,3 +1,5 @@
+v2.0.2 (23.4.2021)
+- deprecated fix
 
 v2.0.1 (29.3.2021)
 - deployment do rozdeleneho repositare
